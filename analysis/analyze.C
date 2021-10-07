@@ -1,0 +1,134 @@
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include "TSystem.h"
+#include "TString.h"
+#include "TStopwatch.h"
+#include <iostream>
+
+#include "ClassUnparticles.C"
+
+using namespace std;
+
+void analyze(){
+
+	TStopwatch sw;
+	sw.Start();
+
+	TString run     = "2018";         // options: 2016 (?), 2017, 2018
+	TString sample  = "Unparticles";  // options: Unparticles, GGJets, GJets, QCD
+	TString spin_du = "spin2_du1p1";  // options: spin2_du1p1, spin2_du1p5, spin2_du1
+	TString Lambda  = "Lambda-10000"; // options: 10000, 8000, 4000
+
+	cout << "\nUsing sample: " << sample << endl;
+
+	TString ntuple_path("root://cmseos.fnal.gov//store/user/cuperez/");
+
+	TChain *chain = new TChain("diphoton/fTree");
+
+	if (run == "2018"){
+		if ( spin_du == "spin0_du1p1" ){
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201633/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201654/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201715/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201735/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201756/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201816/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201836/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201856/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201916/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v2__MINIAODSIM/210930_201938/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201958/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202036/0000/*.root");
+
+		}
+
+		if ( spin_du == "spin0_du1p5" ){
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202057/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202117/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202138/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202200/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202221/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202241/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202303/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202324/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202344/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202405/0000/*.root");
+
+		}
+
+		if ( spin_du == "spin0_du1p9" ){
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202440/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202501/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202522/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202542/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v2__MINIAODSIM/210930_202602/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202622/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202642/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202702/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202723/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202744/0000/*.root");
+
+		}
+
+		if ( spin_du == "spin2_du1p1"){
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202804/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202833/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202856/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202916/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202937/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202957/0000/*.root");
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203018/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203039/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203059/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203120/0000/*.root");
+
+		}
+
+		if ( spin_du == "spin2_du1p1"){
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203140/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203202/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203238/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203258/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203319/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203344/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v3__MINIAODSIM/210930_203404/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203425/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203445/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203506/0000/*.root");
+		}
+
+		if ( spin_du == "spin2_du1p9"){
+
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203527/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203548/0000/*.root");
+			chain->Add(ntuple_path+"UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203609/0000/*.root");
+
+		}
+
+	}
+
+	chain->ls();
+	cout << "Total number of entries: " << chain->GetEntries() << endl;
+
+
+	ClassUnparticles t;
+        t.Loop();
+
+	// stop stopwatch
+	sw.Stop();
+	cout << "Real Time: " << sw.RealTime()/60.0 << " minutes" << endl;
+	cout << "CPU Time: " << sw.CpuTime()/60.0 << " minutes" << endl;
+}
