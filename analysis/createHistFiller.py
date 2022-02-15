@@ -11,6 +11,7 @@ import sys
 parser = argparse.ArgumentParser(description="cmsDriver")
 parser.add_argument("-a", "--action", default="del", help="del for Delete. run for Run.")
 args = parser.parse_args()
+#FIXME: Command line options for filler
 
 action = args.action
 # Timer
