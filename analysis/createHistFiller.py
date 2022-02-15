@@ -22,11 +22,11 @@ DATASET = []
 
 # do2017 = True
 
-doMCspin2_du1p5 = True
+doMCspin2_du1p5 = False
 doMCspin2_du1p9 = False
 doMCspin2_du1p1 = False
 
-doMCspin0_du1p5 = True
+doMCspin0_du1p5 = False
 doMCspin0_du1p9 = False
 doMCspin0_du1p1 = False
 
@@ -44,6 +44,51 @@ run_analyzetemp = "Templates/analyzeTemplate.C"
 # if doSM_gg70: ntuple_path = "root://cmseos.fnal.gov//store/user/cawest/"
 
 baseDirectory = "root://cmseos.fnal.gov/"
+if doMCspin2_du1p1:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145957/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160036/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_150036/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_160050/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_150058/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160104/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_150120/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160117/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_160131/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_150205/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160145/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160159/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_150253/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160214/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_150315/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_160228/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160244/0000/*.root");
+if doMCspin0_du1p1:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_144717/0000/*root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_155103/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_155146/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_144803/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155257/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_144838/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155314/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155328/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_144924/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155343/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_144946/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155358/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_145007/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_155413/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145032/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155426/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145054/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155441/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_145116/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155455/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_145141/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_155510/0000/*.root");
 
 if doMCspin0_du1p9:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145555/0000/*.root");
