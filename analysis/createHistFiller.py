@@ -28,7 +28,7 @@ doMCspin2_du1p1 = False
 
 doMCspin0_du1p5 = False
 doMCspin0_du1p9 = False
-doMCspin0_du1p1 = False
+doMCspin0_du1p1 = True
 
 ### Cannot Run Background and Signal at the same time
 doSM_gg70 = False
