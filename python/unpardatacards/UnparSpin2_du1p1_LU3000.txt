@@ -1,0 +1,16 @@
+imax 1 number of channels
+jmax 1 number of backgrounds
+kmax * number of nuisance parameters
+------------------------------------------------------------
+bin unp
+observation     11.210056553
+#shapes * * UnparSpin2_du1p1_LU3000
+------------------------------------------------------------
+bin             unp       unp
+process         Signal    Background
+process         0         1
+rate            3.42910061496     11.210056553
+'------------------------------------------------------------
+Lumi     lnN    1.025     1.025
+bg_un    lnN    -         1.1
+#Closure  shape  -         1.0
