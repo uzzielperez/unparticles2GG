@@ -10,10 +10,23 @@ import sys
 # Command line options
 parser = argparse.ArgumentParser(description="cmsDriver")
 parser.add_argument("-a", "--action", default="del", help="del for Delete. run for Run.")
+parser.add_argument('-s', '--spin', help='spin 0 or 2', type=int, default=None)
+parser.add_argument('-d', '--du', help='du 1p1, 1p5, 1p9 are available', type=str, default=None)
+parser.add_argument('-b', '--background', help='run leading order background', type=bool, default=False)
+parser.add_argument('-e', '--etaBin', help='BB or BE', type=str, default="BB")
+parser.add_argument('-y', '--year', help='2017 and 2018', type=str, default="2017")
 args = parser.parse_args()
 #FIXME: Command line options for filler
 
 action = args.action
+etaBin = args.etaBin
+year   = args.year
+
+if etaBin == "BB":
+    etaCut = "Photon1_isEB && Photon2_isEB"
+if etaBin == "BE":
+    etaCut = "( (Photon1_isEB && Photon2_isEE) || (Photon2_isEB &&  Photon1_isEE ))"
+
 # Timer
 sw = ROOT.TStopwatch()
 sw.Start()
@@ -21,30 +34,140 @@ sw.Start()
 DATASET = []
 
 # do2017 = True
+doMCBkgGG = True if args.background else False
+doMCspin0 = True if args.spin == 0 else False
+doMCspin2 = True if args.spin == 2 else False
+doMCdu1p1 = True if args.du == "1p1" else False
+doMCdu1p5 = True if args.du == "1p5" else False
+doMCdu1p9 = True if args.du == "1p9" else False
+do2017    = True if year == "2017" else False
+do2018    = True if year == "2018" else False
 
-doMCspin2_du1p5 = False
-doMCspin2_du1p9 = False
-doMCspin2_du1p1 = False
+doMCspin2_du1p5_2017 = doMCspin2 and doMCdu1p5 and do2017
+doMCspin2_du1p9_2017 = doMCspin2 and doMCdu1p9 and do2017
+doMCspin2_du1p1_2017 = doMCspin2 and doMCdu1p1 and do2017
 
-doMCspin0_du1p5 = False
-doMCspin0_du1p9 = False
-doMCspin0_du1p1 = True
+doMCspin0_du1p5_2017 = doMCspin0 and doMCdu1p5 and do2017
+doMCspin0_du1p9_2017 = doMCspin0 and doMCdu1p5 and do2017
+doMCspin0_du1p1_2017 = doMCspin0 and doMCdu1p5 and do2017
+
+doMCspin2_du1p5_2018 = doMCspin2 and doMCdu1p5 and do2018
+doMCspin2_du1p9_2018 = doMCspin2 and doMCdu1p9 and do2018
+doMCspin2_du1p1_2018 = doMCspin2 and doMCdu1p1 and do2018
+
+doMCspin0_du1p5_2018 = doMCspin0 and doMCdu1p5 and do2018
+doMCspin0_du1p9_2018 = doMCspin0 and doMCdu1p5 and do2018
+doMCspin0_du1p1_2018 = doMCspin0 and doMCdu1p5 and do2018
 
 ### Cannot Run Background and Signal at the same time
-doSM_gg70 = False
+doSM_gg70_2017 = doMCBkgGG and do2017
+doSM_gg70_2018 = doMCBkgGG and do2018
 
 numevents = 100000
 
 #Templates
-class_Ctemp     = "Templates/ClassTemplateisEBEB.C"
-class_htemp     = "Templates/ClassTemplateisEBEB.h"
+class_Ctemp     = "Templates/ClassTemplate.C"
+class_htemp     = "Templates/ClassTemplate.h"
 run_analyzetemp = "Templates/analyzeTemplate.C"
 
 # ntuple_path = "root://cmseos.fnal.gov//store/user/cuperez/"
 # if doSM_gg70: ntuple_path = "root://cmseos.fnal.gov//store/user/cawest/"
 
 baseDirectory = "root://cmseos.fnal.gov/"
-if doMCspin2_du1p1:
+#### 2018
+if doSM_gg70_2018:
+    DATASET.append(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213601/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213628/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213653/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213719/0000/*.root");
+
+if doMCspin2_du1p1_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202804/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202833/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202856/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202916/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202937/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202957/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203018/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203039/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203059/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203120/0000/*.root");
+
+if doMCspin2_du1p5_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203140/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203202/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203238/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203258/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203319/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203344/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v3__MINIAODSIM/210930_203404/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203425/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203445/0000/*.root");
+
+if doMCspin2_du1p9_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203527/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_203548/0000/*.root");
+    #
+    # DATASET.append(baseDirectory +
+    # DATASET.append(baseDirectory +
+    # DATASET.append(baseDirectory +
+    #
+    # DATASET.append(baseDirectory +
+    # DATASET.append(baseDirectory +
+    # DATASET.append(baseDirectory +
+    # DATASET.append(baseDirectory +
+
+if doMCspin0_du1p1_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201633/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201654/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201715/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201735/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201756/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201816/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201836/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201856/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201916/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Autumn18-v2__MINIAODSIM/210930_201938/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_201958/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202036/0000/*.root");
+
+if doMCspin0_du1p5_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202057/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202117/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202138/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202200/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202221/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202241/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202303/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202324/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202344/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202405/0000/*.root");
+
+if doMCspin0_du1p9_2018:
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202440/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202501/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202522/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202542/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v2__MINIAODSIM/210930_202602/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202622/0000/*.root");
+
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202642/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202702/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202723/0000/*.root");
+    DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/210930_202744/0000/*.root");
+
+
+#### 2017
+if doMCspin2_du1p1_2017:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145957/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160036/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_150036/0000/*.root");
@@ -64,7 +187,7 @@ if doMCspin2_du1p1:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_150315/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_160228/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160244/0000/*.root");
-if doMCspin0_du1p1:
+if doMCspin0_du1p1_2017:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_144717/0000/*root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_155103/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/211005_155146/0000/*.root");
@@ -90,7 +213,7 @@ if doMCspin0_du1p1:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_145141/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-8000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_155510/0000/*.root");
 
-if doMCspin0_du1p9:
+if doMCspin0_du1p9_2017:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_145555/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155755/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155810/0000/*.root");
@@ -109,7 +232,7 @@ if doMCspin0_du1p9:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_145900/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155946/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160002/0000/*.root");
-if doMCspin2_du1p9:
+if doMCspin2_du1p9_2017:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_150814/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160531/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_150837/0000/*.root");
@@ -129,7 +252,7 @@ if doMCspin2_du1p9:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160751/0000/*.root");
 
 
-if doMCspin2_du1p5:
+if doMCspin2_du1p5_2017:
     #2000, 2500, 3000
     DATASET.append(baseDirectory+"/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_160258/0000/*.root");
     DATASET.append(baseDirectory+"/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v2__MINIAODSIM/211005_150439/0000/*.root");
@@ -153,7 +276,7 @@ if doMCspin2_du1p5:
     DATASET.append(baseDirectory+"/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_150753/0000/*.root");
     DATASET.append(baseDirectory+"/store/user/cuperez/UnparticlesGG/UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p5_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_160517/0000/*.root");
 
-if doMCspin0_du1p5:
+if doMCspin0_du1p5_2017:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/211005_155527/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_145238/0000/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/211005_155542/0000/*.root");
@@ -174,23 +297,24 @@ if doMCspin0_du1p5:
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_145531/*.root");
     DATASET.append(baseDirectory + "/store/user/cuperez/UnparticlesGG/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/211005_155741/*.root");
 
-if doSM_gg70:
+if doSM_gg70_2017:
     DATASET.append(baseDirectory+"/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_233628/0000/*.root");
     DATASET.append(baseDirectory+"/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_213442/0000/*.root");
     DATASET.append(baseDirectory+"/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_213509/0000/*.root");
     DATASET.append(baseDirectory+"/store/user/cawest/diphoton/cba3996/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_213535/0000/*.root");
 
+##### Filenames and Processing
 for dset in DATASET:
     # if "GG" in dset:
-    if doSM_gg70:
+    if doMCBkgGG:
         pattern = "crab_([^(]*)_M-([^(]*)_Pt([^(]*)_TuneCP2_13TeV-pythia8__([^(]*)-v1__MINIAODSIM"
         match = re.findall(pattern, dset)
         PH, massrange, pTcut, run_year = match[0]
 
-        classname = "Class%s_pT%s_M%s_%s" %(PH, pTcut, massrange, run_year)
+        classname = "Class%s_pT%s_M%s_%s_%s" %(PH, pTcut, massrange, run_year, etaBin)
         classname = classname.replace('-', '_')
-        an_func = "analyze_%s" %(classname)
-        outfile = "%s.root" %(classname)
+        an_func = "analyze_%s" %(classname, )
+        outfile = "%s_pT%s_M%s_%s_%s.root" %(PH, pTcut, massrange, year, etaBin)
 
     if "Unp" in dset:
 
@@ -209,10 +333,10 @@ for dset in DATASET:
         mrange = massrange.replace('-', '_')
 
     if "Unp" in dset:
-        classname = "Class%s_spin%s_du%s_LU%s_pT%s_M%s_%s" %(PH, spin, du, LambdaU, pTcut, mrange, run_year)
+        classname = "Class%s_spin%s_du%s_LU%s_pT%s_M%s_%s_%s" %(PH, spin, du, LambdaU, pTcut, mrange, run_year, etaBin)
         classname = classname.replace('-', '_')
         an_func = "analyze_%s" %(classname)
-        outfile = "%s_spin%s_du%s_LU%s_pT%s_M%s_%s.root" %(PH, spin, du, LambdaU, pTcut, mrange, run_year)
+        outfile = "%s_spin%s_du%s_LU%s_pT%s_M%s_%s_%s.root" %(PH, spin, du, LambdaU, pTcut, mrange, year, etaBin)
         #print classname
 
     # Template Replacements
@@ -223,6 +347,7 @@ for dset in DATASET:
            "inputTree": dset,
            "analyzefunc": an_func,
            "numevents": numevents,
+           "etaCut": etaCut
            }
 
     #Read and replace template file
