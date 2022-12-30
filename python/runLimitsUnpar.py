@@ -1,5 +1,7 @@
 #! /bin/env python
 ''' Run limits for Unparticles diphoton analysis'''
+''' Used together with the Higgs Combine Package'''
+
 import argparse
 import os
 
@@ -11,19 +13,23 @@ parser.add_argument('-r', '--runCombine', action='store_true', help="Run Combine
 parser.add_argument('-g', '--gleanHarvesting', action='store_true', help="Run Combine Harvester CollectLimits")
 parser.add_argument('-p', '--plotLimits', action='store_true', help="Run plotLimits from CombineHarvester")
 parser.add_argument('-s', '--switchBin', action='store_true', help="Run on rebinned datacards")
+parser.add_argument('-m', '--masscut', type=int, help="Masscut", default=2000)
 args = parser.parse_args()
 
 '''STEP1: Run Combine Cards'''
-'''STEP2: Collect Limits in json files'''
-'''STEP3: plotLimits'''
+'''step1.a - combine cards with option -c with -b if with blinded'''
+'''step1.b - runCombine with option -r or -b with blinded results'''
+'''STEP2: Collect Limits in json files with option -g'''
+'''STEP3: plotLimits with option -p'''
 
-blind_data = args.blind
-create_cards = args.combineCards
+blind_data    = args.blind
+create_cards  = args.combineCards
 relative_path = args.directory
-run_Combine = args.runCombine
+run_Combine   = args.runCombine
 run_Harvester = args.gleanHarvesting
-run_plotter = args.plotLimits
-run_rebinned = args.switchBin
+run_plotter   = args.plotLimits
+run_rebinned  = args.switchBin
+massCut       = args.masscut
 
 #UnparToGG_Spin0_du1p1_LambdaU-8000_TuneCP2_13TeV_pythia8_2017_BE.dat
 
@@ -53,6 +59,9 @@ for dimension in dimensions:
         #outputdatacard = "datacards/" + name + "_combined_blinded.dat"
         outputdatacard = "datacards/" + name + "_combined.dat"
 
+        if massCut is not None:
+            outputdatacard = "datacards/" + name + "_m" + str(massCut) +  "_combined.dat"
+
         if blind_data:
             # insert blinded string
             index          = outputdatacard.find('.dat')
@@ -69,6 +78,9 @@ for dimension in dimensions:
 
                 if run_rebinned:
                     inCardName = name + "_rebinned_" + year + "_" + region + ".dat "
+
+                if massCut is not None:
+                    inCardName = name + "_m" + str(massCut) + "_" + year + "_" + region + ".dat "
 
 
                 cmd += region + "_" + year + "=" + "datacards/" + inCardName
@@ -102,6 +114,8 @@ if run_plotter:
         jsonfilename = "limits" + dimension
         if blind_data:
             jsonfilename = jsonfilename + '_blinded'
-        plotCmd = "plotLimits.py " + jsonfilename + ".json -o " + jsonfilename + " --x-title r#Lambda_{U}"
+        #plotCmd = "plotLimits.py " + jsonfilename + ".json -o " + jsonfilename + " --x-title r#Lambda_{U}"
+        #plotCmd = "python plotlimitsCombine.py " + jsonfilename + ".json -o " + jsonfilename + " --x-title r#Lambda_{U}"
+        plotCmd = "python plotlimitsCombine.py -i " + jsonfilename + ".json" 
         print plotCmd
         os.system(plotCmd)
